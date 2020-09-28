@@ -7,14 +7,15 @@ const server = express();
 server.use(cors());
 
 server.get('/', (req, res) => {
-    connection.query(
-        'SELECT * FROM `status`',
-        function(err, results, fields) {
-          res.json(results)
-        }
-      );
+    return res.send('Home')
 });
 
-
+server.get('/products', (req, res) => {
+  connection.query(
+    'SELECT * FROM `products`', function(err, results, fields) {
+      res.json(results)
+    }
+  )
+})
 
 module.exports = server;
