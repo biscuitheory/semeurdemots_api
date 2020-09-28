@@ -9,7 +9,7 @@ router.use(bodyParser.json());
 router.use(productsRouter);
 
 router.get('/', (req, res) => {
-  return res.send('Home');
+  res.status(200).json({ message: 'Home' });
 });
 
 router.get('*', (req, res) => {
