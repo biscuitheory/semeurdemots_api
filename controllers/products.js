@@ -1,9 +1,11 @@
-const Products = require('../models/product');
+const db = require('../models');
 
-exports.showAllProducts = (req, res) => {
-  Products.showAllProducts(function () {
-    res.render('/products', {
-      
+const { Product } = db;
+
+module.exports = {
+  getProducts: () => {
+    return Product.findAll({
+      attributes: ['id', 'name', 'price', 'stock', 'description', 'image'],
     });
-  });
+  },
 };
