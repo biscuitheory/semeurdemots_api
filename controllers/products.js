@@ -1,9 +1,9 @@
-const Products = require('../models/Products');
+const Products = require('../models/product');
 
 exports.showAllProducts = (req, res) => {
   Products.showAllProducts(function () {
     res.render('/products', {
-      name: name
+      
     });
   });
 };
