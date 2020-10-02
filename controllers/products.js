@@ -17,8 +17,4 @@ module.exports = {
       ],
     });
   },
-  addToCart: (req, res) => {},
-  getCart: (req, res) => {
-    return {};
-  },
 };

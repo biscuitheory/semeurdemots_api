@@ -2,13 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const router = express.Router();
-const shopRouter = require('./shop');
-const adminRouter = require('./admin');
+const productsRouter = require('./products');
+const usersRouter = require('./users');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
-router.use(adminRouter);
-router.use(shopRouter);
+router.use(usersRouter);
+router.use(productsRouter);
 
 router.get('/', (req, res) => {
   res.status(200).json({ message: 'Home' });
