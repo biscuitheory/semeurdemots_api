@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const db = require('../models');
@@ -55,7 +56,20 @@ module.exports = {
     });
   },
 
-  checkPassword: (password, userPassword) => {
+  getUserByEmailOrUsername: (userEmailOrUsername) => {
+    console.log(userEmailOrUsername);
+    return User.findOne({
+      where: {
+        [Op.or]: [
+          { username: userEmailOrUsername },
+          { email: userEmailOrUsername },
+        ],
+      },
+    });
+  },
+
+  checkPassword: async (password, userPassword) => {
+    console.log(userPassword);
     return bcrypt.compare(password, userPassword);
   },
 };

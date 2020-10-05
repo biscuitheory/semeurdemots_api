@@ -5,7 +5,12 @@ const authMid = require('../utils/jwt.utils');
 
 const router = express.Router();
 
-router.post('/commander', authMid.authenticateJWT, async (req, res) => {
+router.get('/products', async (req, res) => {
+  const productsFound = await productsController.getProducts();
+  res.status(201).json(productsFound);
+});
+
+router.post('/products', authMid.authenticateJWT, async (req, res) => {
   const { userAdmin } = req.user;
   const { name } = req.body;
 
@@ -21,19 +26,6 @@ router.post('/commander', authMid.authenticateJWT, async (req, res) => {
     id: newProduct.id,
     name: newProduct.name,
   });
-});
-
-router.get('/commander', authMid.authenticateJWT, async (req, res) => {
-  const { userAdmin } = req.user;
-
-  if (userAdmin === false) {
-    return res.status(403).json({
-      message: "Vous n'êtes pas autorisé à accéder à cette ressource",
-    });
-  }
-
-  const productsFound = await productsController.getProducts();
-  res.status(201).json(productsFound);
 });
 
 // router.get('/cart', async (req, res) => {});

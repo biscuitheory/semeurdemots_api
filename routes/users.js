@@ -1,9 +1,40 @@
 const express = require('express');
+const { getUserByEmailOrUsername } = require('../controllers/users');
 
 const usersController = require('../controllers/users');
 const jwtUtils = require('../utils/jwt.utils');
 
 const router = express.Router();
+
+router.post('/signuplite', async (req, res) => {
+  const { username, email } = req.body;
+
+  if (username === null || username === undefined || username === '') {
+    return res.status(400).json({
+      error: "Le champ username n'est pas renseigné",
+    });
+  }
+  if (typeof username !== 'string') {
+    return res.status(400).json({
+      error: 'Le champ username doit être une chaîne de caractères',
+    });
+  }
+
+  const userFound = await usersController.checkEmail(email);
+  if (userFound === null) {
+    const newUser = await usersController.addUser(req.body);
+
+    res.status(201).json({
+      username: newUser.username,
+      email: newUser.email,
+      admin: newUser.admin,
+    });
+  } else {
+    return res.status(409).json({
+      error: 'Un utilisateur utilisant cette adresse email est déjà enregistré',
+    });
+  }
+});
 
 router.post('/signup', async (req, res) => {
   const { firstname, email } = req.body;
@@ -43,11 +74,29 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/signin', async (req, res) => {
-  const { email, password } = req.body;
+  const { emailOrUsername, password } = req.body;
+  if (
+    emailOrUsername === null ||
+    emailOrUsername === undefined ||
+    emailOrUsername === ''
+  ) {
+    return res.status(400).json({
+      error: "Le champ email or username n'est pas renseigné",
+    });
+  }
+  if (typeof emailOrUsername !== 'string') {
+    return res.status(400).json({
+      error: 'Le champ email or username doit être une chaîne de caractères',
+    });
+  }
 
-  const userFound = await usersController.getUserByEmail(email);
+  const userFound = await usersController.getUserByEmailOrUsername(
+    emailOrUsername
+  );
 
   if (userFound) {
+    console.log(userFound);
+    // console.log(userFound.dataValues);
     const isIdentified = await usersController.checkPassword(
       password,
       userFound.password
