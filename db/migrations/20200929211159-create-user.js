@@ -43,6 +43,9 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
+      payment: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

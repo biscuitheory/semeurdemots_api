@@ -1,10 +1,19 @@
 const express = require('express');
-const { getUserByEmailOrUsername } = require('../controllers/users');
+require('dotenv').config();
+const nodemailer = require('nodemailer');
 
 const usersController = require('../controllers/users');
 const jwtUtils = require('../utils/jwt.utils');
 
 const router = express.Router();
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
 
 router.post('/signuplite', async (req, res) => {
   const { username, email } = req.body;
@@ -23,6 +32,21 @@ router.post('/signuplite', async (req, res) => {
   const userFound = await usersController.checkEmail(email);
   if (userFound === null) {
     const newUser = await usersController.addUser(req.body);
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: `Bienvenue ${username}, la création de votre compte client est un succès !`,
+      html: `Chèr(e) ${username}, votre compte client sur la boutique du semeur de mots a bien été crée ! Vous pouvez désormais vous connecter via la page http://localhost:3000/compte-client pour consulter l'historique de vos (futures) commandes ainsi que vos informations personnelles saisies sur le site. A très bientôt sur www.semeurdemots.fr !`,
+    };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`Email sent: '${info.response}`);
+      }
+    });
 
     res.status(201).json({
       username: newUser.username,

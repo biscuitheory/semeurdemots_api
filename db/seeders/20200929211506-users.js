@@ -14,6 +14,7 @@ const users = [...Array(5)].map((user) => ({
   username: faker.internet.userName(),
   password: faker.internet.password(8),
   admin: false,
+  payment: faker.finance.transactionDescription(),
   createdAt: new Date(),
   updatedAt: new Date(),
 }));
