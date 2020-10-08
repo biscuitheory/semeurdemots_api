@@ -57,7 +57,6 @@ module.exports = {
   },
 
   getUserByEmailOrUsername: (userEmailOrUsername) => {
-    console.log(userEmailOrUsername);
     return User.findOne({
       where: {
         [Op.or]: [
@@ -69,7 +68,10 @@ module.exports = {
   },
 
   checkPassword: async (password, userPassword) => {
-    console.log(userPassword);
     return bcrypt.compare(password, userPassword);
+  },
+
+  getIdentifiedUser: (userId) => {
+    return User.findByPk(userId);
   },
 };

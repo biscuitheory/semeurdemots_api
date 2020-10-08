@@ -1,8 +1,10 @@
 const express = require('express');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+const users = require('../controllers/users');
 
 const usersController = require('../controllers/users');
+const { authenticateJWT } = require('../utils/jwt.utils');
 const jwtUtils = require('../utils/jwt.utils');
 
 const router = express.Router();
@@ -60,6 +62,133 @@ router.post('/signuplite', async (req, res) => {
   }
 });
 
+router.post('/signincustomer', async (req, res) => {
+  const { emailOrUsername, password } = req.body;
+  if (
+    emailOrUsername === null ||
+    emailOrUsername === undefined ||
+    emailOrUsername === ''
+  ) {
+    return res.status(400).json({
+      error: "Le champ email or username n'est pas renseigné",
+    });
+  }
+  if (typeof emailOrUsername !== 'string') {
+    return res.status(400).json({
+      error: 'Le champ email or username doit être une chaîne de caractères',
+    });
+  }
+
+  const userFound = await usersController.getUserByEmailOrUsername(
+    emailOrUsername
+  );
+
+  if (userFound) {
+    // console.log(userFound);
+    // console.log(userFound.dataValues);
+    const isIdentified = await usersController.checkPassword(
+      password,
+      userFound.password
+    );
+    if (isIdentified) {
+      res.status(200).json({
+        token: jwtUtils.genToken(userFound),
+        user: {
+          firstname: userFound.firstname,
+          lastname: userFound.lastname,
+          address: userFound.address,
+          zipcode: userFound.zipcode,
+          city: userFound.city,
+          country: userFound.country,
+          phone: userFound.phone,
+          username: userFound.username,
+          email: userFound.email,
+          admin: userFound.admin,
+        },
+      });
+    } else {
+      return res.status(401).json({
+        message: "Votre mot de passe n'est pas correct",
+      });
+    }
+  } else {
+    return res.status(401).json({
+      message: "Votre compte n'existe pas",
+    });
+  }
+});
+
+router.post('/signinadmin', async (req, res) => {
+  const { emailOrUsername, password, userAdmin } = req.body;
+  if (
+    emailOrUsername === null ||
+    emailOrUsername === undefined ||
+    emailOrUsername === ''
+  ) {
+    return res.status(400).json({
+      error: "Le champ email or username n'est pas renseigné",
+    });
+  }
+  if (typeof emailOrUsername !== 'string') {
+    return res.status(400).json({
+      error: 'Le champ email or username doit être une chaîne de caractères',
+    });
+  }
+
+  if (userAdmin === false) {
+    return res.status(403).json({
+      message: "Vous n'êtes pas autorisé à accéder à cette ressource",
+    });
+  }
+
+  const userFound = await usersController.getUserByEmailOrUsername(
+    emailOrUsername
+  );
+
+  if (userFound) {
+    // console.log(userFound);
+    // console.log(userFound.dataValues);
+    const isIdentified = await usersController.checkPassword(
+      password,
+      userFound.password
+    );
+    if (isIdentified) {
+      res.status(200).json({
+        token: jwtUtils.genToken(userFound),
+        user: {
+          firstname: userFound.firstname,
+          lastname: userFound.lastname,
+          address: userFound.address,
+          zipcode: userFound.zipcode,
+          city: userFound.city,
+          country: userFound.country,
+          phone: userFound.phone,
+          username: userFound.username,
+          email: userFound.email,
+          admin: userFound.admin,
+        },
+      });
+    } else {
+      return res.status(401).json({
+        message: "Votre mot de passe n'est pas correct",
+      });
+    }
+  } else {
+    return res.status(401).json({
+      message: "Votre compte n'existe pas",
+    });
+  }
+});
+
+router.get('/user/me', authenticateJWT, async (req, res) => {
+  console.log(req.user);
+  const identifiedUser = await usersController.getIdentifiedUser(
+    req.user.userId
+  );
+
+  res.status(200).json(identifiedUser);
+});
+
 router.post('/signup', async (req, res) => {
   const { firstname, email } = req.body;
 
@@ -93,62 +222,6 @@ router.post('/signup', async (req, res) => {
   } else {
     return res.status(409).json({
       error: 'Un utilisateur utilisant cette adresse email est déjà enregistré',
-    });
-  }
-});
-
-router.post('/signin', async (req, res) => {
-  const { emailOrUsername, password } = req.body;
-  if (
-    emailOrUsername === null ||
-    emailOrUsername === undefined ||
-    emailOrUsername === ''
-  ) {
-    return res.status(400).json({
-      error: "Le champ email or username n'est pas renseigné",
-    });
-  }
-  if (typeof emailOrUsername !== 'string') {
-    return res.status(400).json({
-      error: 'Le champ email or username doit être une chaîne de caractères',
-    });
-  }
-
-  const userFound = await usersController.getUserByEmailOrUsername(
-    emailOrUsername
-  );
-
-  if (userFound) {
-    console.log(userFound);
-    // console.log(userFound.dataValues);
-    const isIdentified = await usersController.checkPassword(
-      password,
-      userFound.password
-    );
-    if (isIdentified) {
-      res.status(200).json({
-        token: jwtUtils.genToken(userFound),
-        user: {
-          firstname: userFound.firstname,
-          lastname: userFound.lastname,
-          address: userFound.address,
-          zipcode: userFound.zipcode,
-          city: userFound.city,
-          country: userFound.country,
-          phone: userFound.phone,
-          username: userFound.username,
-          email: userFound.email,
-          admin: userFound.admin,
-        },
-      });
-    } else {
-      return res.status(401).json({
-        message: "Votre mot de passe n'est pas correct",
-      });
-    }
-  } else {
-    return res.status(401).json({
-      message: "Votre compte n'existe pas",
     });
   }
 });

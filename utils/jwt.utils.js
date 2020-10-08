@@ -36,4 +36,14 @@ module.exports = {
       });
     }
   },
+
+  isAdmin: (req, res, next) => {
+    console.log(req.user);
+    if (req.user.userAdmin === true) next();
+    else {
+      res.status(401).json({
+        error: 'Vous devez être connecté pour accéder à cette ressource',
+      });
+    }
+  },
 };

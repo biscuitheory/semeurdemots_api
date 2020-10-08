@@ -10,23 +10,34 @@ router.get('/products', async (req, res) => {
   res.status(201).json(productsFound);
 });
 
-router.post('/products', authMid.authenticateJWT, async (req, res) => {
-  const { userAdmin } = req.user;
-  const { name } = req.body;
+router.post(
+  '/products',
+  authMid.authenticateJWT,
+  authMid.isAdmin,
+  async (req, res) => {
+    const { userAdmin } = req.user;
+    const { name } = req.body;
 
-  if (userAdmin === false) {
-    return res.status(403).json({
-      message: "Vous n'êtes pas autorisé à accéder à cette ressource",
+    if (userAdmin === false) {
+      return res.status(403).json({
+        message: "Vous n'êtes pas autorisé à accéder à cette ressource",
+      });
+    }
+
+    const newProduct = await productsController.addProduct(req.body);
+    // console.log(newProduct);
+
+    return res.status(201).json({
+      id: newProduct.id,
+      name: newProduct.name,
+      type: newProduct.type,
+      price: newProduct.price,
+      stock: newProduct.stock,
+      description: newProduct.description,
+      image: newProduct.image,
     });
   }
-
-  const newProduct = await productsController.addProduct(req.body);
-
-  return res.status(201).json({
-    id: newProduct.id,
-    name: newProduct.name,
-  });
-});
+);
 
 // router.get('/cart', async (req, res) => {});
 
