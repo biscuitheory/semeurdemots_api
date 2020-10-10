@@ -74,4 +74,44 @@ module.exports = {
   getIdentifiedUser: (userId) => {
     return User.findByPk(userId);
   },
+
+  getUserById: (userId) => {
+    return User.findByPk(userId.id);
+  },
+
+
+
+  getAllUsers: () => {
+    return User.findAll({
+      attributes: [
+        'id',
+        'firstname',
+        'lastname',
+        'address',
+        'zipcode',
+        'city',
+        'country',
+        'phone',
+        'username',
+        'email',
+        'admin',
+      ],
+    });
+  },
+
+  updateUser: async (data, userId) => {
+    const userFound = await User.findByPk(userId);
+    if (!userFound) {
+      return userFound;
+    }
+    return userFound.update(data);
+  },
+
+  deleteUser: async (data, userId) => {
+    const userFound = await User.findByPk(userId);
+    if (!userFound) {
+      return userFound;
+    }
+    return userFound.destroy(data);
+  },
 };

@@ -1,11 +1,11 @@
 const express = require('express');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const users = require('../controllers/users');
 
 const usersController = require('../controllers/users');
 const { authenticateJWT } = require('../utils/jwt.utils');
 const jwtUtils = require('../utils/jwt.utils');
+const { route } = require('./products');
 
 const router = express.Router();
 
@@ -226,12 +226,104 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-router.get('/signup', async (req, res) => {
-  res.send('Signup formulaire');
+router.get('/users', async (req, res) => {
+  const usersFound = await usersController.getAllUsers();
+  return res.status(200).json(usersFound);
 });
 
-router.get('/user', (req, res) => {
-  res.send('Portail admin');
+router.get('/users/:id', async (req, res) => {
+  const userFound = await usersController.getUserById(req.params);
+  if (!userFound) {
+    return res.status(404).json({
+      error: "La ressource demandée n'existe pas",
+    });
+  }
+  return res.status(200).json({
+    id: userFound.id,
+    firstname: userFound.firstname,
+    lastname: userFound.lastname,
+    address: userFound.address,
+    zipcode: userFound.zipcode,
+    city: userFound.city,
+    country: userFound.country,
+    phone: userFound.phone,
+    username: userFound.username,
+    email: userFound.email,
+    admin: userFound.admin,
+  });
+});
+
+router.put('/users/:id', async (req, res) => {
+  const { username, email } = req.body;
+
+  if (username === null || username === undefined || username === '') {
+    return res.status(400).json({
+      error: "Le champ username n'est pas renseigné",
+    });
+  }
+  if (typeof username !== 'string') {
+    return res.status(400).json({
+      error: 'Le champ username doit être une chaîne de caractères',
+    });
+  }
+
+  // console.log(req.body);
+  const userUpdated = await usersController.updateUser(
+    req.body,
+    req.params.userId
+  );
+
+  if (!userUpdated) {
+    return res.status(404).json({
+      message: "La ressource demandée n'existe pas",
+    });
+  }
+
+  return res.status(200).json({
+    firstname: userUpdated.firstname,
+    lastname: userUpdated.lastname,
+    address: userUpdated.address,
+    zipcode: userUpdated.zipcode,
+    city: userUpdated.city,
+    country: userUpdated.country,
+    phone: userUpdated.phone,
+    username: userUpdated.username,
+    email: userUpdated.email,
+    admin: userUpdated.admin,
+  });
+});
+
+router.delete('/user/:id', async (req, res) => {
+  // const { username, email } = req.body;
+
+  // console.log(req.body);
+  const removedUser = await usersController.deleteUser(
+    req.body,
+    req.params.userId
+  );
+
+  if (!removedUser) {
+    return res.status(404).json({
+      message: "La ressource demandée n'existe pas",
+    });
+  }
+
+  return res.status(200).json({
+    firstname: removedUser.firstname,
+    lastname: removedUser.lastname,
+    address: removedUser.address,
+    zipcode: removedUser.zipcode,
+    city: removedUser.city,
+    country: removedUser.country,
+    phone: removedUser.phone,
+    username: removedUser.username,
+    email: removedUser.email,
+    admin: removedUser.admin,
+  });
+});
+
+router.get('/signup', async (req, res) => {
+  res.send('Signup formulaire');
 });
 
 module.exports = router;

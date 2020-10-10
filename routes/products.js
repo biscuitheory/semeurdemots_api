@@ -16,7 +16,6 @@ router.post(
   authMid.isAdmin,
   async (req, res) => {
     const { userAdmin } = req.user;
-    const { name } = req.body;
 
     if (userAdmin === false) {
       return res.status(403).json({

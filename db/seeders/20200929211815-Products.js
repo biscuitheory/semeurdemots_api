@@ -1,7 +1,7 @@
 const faker = require('faker');
 
 const products = [...Array(5)].map((product) => {
-  const productType = ['book', 'produit dérivé'];
+  const productType = ['livre', 'produit dérivé'];
   const randomProductType =
     productType[Math.floor(Math.random() * productType.length)];
   return {
