@@ -268,10 +268,7 @@ router.put('/users/:id', async (req, res) => {
   }
 
   // console.log(req.body);
-  const userUpdated = await usersController.updateUser(
-    req.body,
-    req.params.userId
-  );
+  const userUpdated = await usersController.updateUser(req.body, req.params);
 
   if (!userUpdated) {
     return res.status(404).json({
@@ -293,14 +290,8 @@ router.put('/users/:id', async (req, res) => {
   });
 });
 
-router.delete('/user/:id', async (req, res) => {
-  // const { username, email } = req.body;
-
-  // console.log(req.body);
-  const removedUser = await usersController.deleteUser(
-    req.body,
-    req.params.userId
-  );
+router.delete('/users/:id', async (req, res) => {
+  const removedUser = await usersController.deleteUser(req.params);
 
   if (!removedUser) {
     return res.status(404).json({
@@ -309,16 +300,7 @@ router.delete('/user/:id', async (req, res) => {
   }
 
   return res.status(200).json({
-    firstname: removedUser.firstname,
-    lastname: removedUser.lastname,
-    address: removedUser.address,
-    zipcode: removedUser.zipcode,
-    city: removedUser.city,
-    country: removedUser.country,
-    phone: removedUser.phone,
-    username: removedUser.username,
-    email: removedUser.email,
-    admin: removedUser.admin,
+    message: "L'utilisateur a été supprimé",
   });
 });
 

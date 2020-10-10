@@ -100,18 +100,18 @@ module.exports = {
   },
 
   updateUser: async (data, userId) => {
-    const userFound = await User.findByPk(userId);
+    const userFound = await User.findByPk(userId.id);
     if (!userFound) {
       return userFound;
     }
     return userFound.update(data);
   },
 
-  deleteUser: async (data, userId) => {
-    const userFound = await User.findByPk(userId);
-    if (!userFound) {
-      return userFound;
-    }
-    return userFound.destroy(data);
+  deleteUser: async (userId) => {
+    return User.destroy({
+      where: {
+        id: userId.id,
+      },
+    });
   },
 };
