@@ -79,8 +79,6 @@ module.exports = {
     return User.findByPk(userId.id);
   },
 
-
-
   getAllUsers: () => {
     return User.findAll({
       attributes: [
@@ -100,7 +98,7 @@ module.exports = {
   },
 
   updateUser: async (data, userId) => {
-    const userFound = await User.findByPk(userId.id);
+    const userFound = await User.findByPk(userId);
     if (!userFound) {
       return userFound;
     }

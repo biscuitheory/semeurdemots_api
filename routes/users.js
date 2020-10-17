@@ -5,7 +5,6 @@ const nodemailer = require('nodemailer');
 const usersController = require('../controllers/users');
 const { authenticateJWT } = require('../utils/jwt.utils');
 const jwtUtils = require('../utils/jwt.utils');
-const { route } = require('./products');
 
 const router = express.Router();
 
@@ -17,7 +16,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-router.post('/signuplite', async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { username, email } = req.body;
 
   if (username === null || username === undefined || username === '') {
@@ -189,7 +188,7 @@ router.get('/user/me', authenticateJWT, async (req, res) => {
   res.status(200).json(identifiedUser);
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/signupfull', async (req, res) => {
   const { firstname, email } = req.body;
 
   if (firstname === null || firstname === undefined || firstname === '') {
@@ -253,7 +252,8 @@ router.get('/users/:id', async (req, res) => {
   });
 });
 
-router.put('/users/:id', async (req, res) => {
+router.patch('/users/', authenticateJWT, async (req, res) => {
+  const { userId } = req.user;
   const { username, email } = req.body;
 
   if (username === null || username === undefined || username === '') {
@@ -268,7 +268,7 @@ router.put('/users/:id', async (req, res) => {
   }
 
   // console.log(req.body);
-  const userUpdated = await usersController.updateUser(req.body, req.params);
+  const userUpdated = await usersController.updateUser(req.body, userId);
 
   if (!userUpdated) {
     return res.status(404).json({

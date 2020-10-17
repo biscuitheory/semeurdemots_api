@@ -1,6 +1,7 @@
 const express = require('express');
 
 const productsController = require('../controllers/products');
+const { authenticateJWT } = require('../utils/jwt.utils');
 const authMid = require('../utils/jwt.utils');
 
 const router = express.Router();
@@ -38,8 +39,49 @@ router.post(
   }
 );
 
-// router.get('/cart', async (req, res) => {});
+router.patch('/products/', authenticateJWT, async (req, res) => {
+  const { productId } = req.params;
+  const { name } = req.body;
 
+  if (name === null || name === undefined || name === '') {
+    return res.status(400).json({
+      error: "Le champ nom du produit n'est pas renseigné",
+    });
+  }
+  if (typeof name !== 'string') {
+    return res.status(400).json({
+      error: 'Le champ nom du produit doit être une chaîne de caractères',
+    });
+  }
+
+  // console.log(req.body);
+  const productUpdated = await productsController.updateProduct(
+    req.body,
+    productId
+  );
+
+  if (!productUpdated) {
+    return res.status(404).json({
+      message: "La ressource demandée n'existe pas",
+    });
+  }
+
+  return res.status(200).json({
+    name: productUpdated.name,
+    type: productUpdated.type,
+    price: productUpdated.price,
+    stock: productUpdated.stock,
+    description: productUpdated.description,
+    image: productUpdated.image,
+  });
+});
+
+router.post('/cart', async (req, res) => {
+  // console.log('ert', req.body.id);
+  console.log('ret', req.body);
+  const productsFound = await productsController.getProductFromCart(req.body);
+  res.status(201).json(productsFound);
+});
 // router.get('/checkout', async (req, res) => {});
 
 // router.post('/cart', async (req, res) => {
