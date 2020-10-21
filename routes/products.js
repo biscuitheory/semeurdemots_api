@@ -79,9 +79,22 @@ router.patch('/products/', authenticateJWT, async (req, res) => {
 router.post('/cart', async (req, res) => {
   // console.log('ert', req.body.id);
   console.log('ret', req.body);
+  console.log('retu', req.body.localStorage);
+  delete req.body.localStorage.token;
   const productsFound = await productsController.getProductFromCart(req.body);
   res.status(201).json(productsFound);
+  // return res.status(201).json({
+  //   id: productsFound.id,
+  //   name: productsFound.name,
+  //   type: productsFound.type,
+  //   price: productsFound.price,
+  //   stock: productsFound.stock,
+  //   description: productsFound.description,
+  //   image: productsFound.image,
+  //   quantity: productsFound.value,
+  // });
 });
+
 // router.get('/checkout', async (req, res) => {});
 
 // router.post('/cart', async (req, res) => {
