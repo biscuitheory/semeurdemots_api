@@ -1,10 +1,19 @@
 const express = require('express');
+require('dotenv').config();
+const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`);
 
 const productsController = require('../controllers/products');
 const { authenticateJWT } = require('../utils/jwt.utils');
 const authMid = require('../utils/jwt.utils');
 
 const router = express.Router();
+
+// const calculateOrderAmount = products => {
+//   // Replace this constant with a calculation of the order's amount
+//   // Calculate the order total on the server to prevent
+//   // people from directly manipulating the amount on the client
+//   return 1400;
+// };
 
 router.get('/products', async (req, res) => {
   const productsFound = await productsController.getProducts();
@@ -93,6 +102,23 @@ router.post('/cart', async (req, res) => {
   //   image: productsFound.image,
   //   quantity: productsFound.value,
   // });
+});
+
+router.post('/payment', async (req, res) => {
+  const { amount, name, email } = req.body;
+  console.log('paymnt', req.body);
+  console.log('test amount ', typeof amount);
+  const paymentIntent = await stripe.paymentIntents.create({
+    // amount: calculateOrderAmount(product),
+    amount: amount * 100,
+    currency: 'eur',
+    description: name,
+    recepient_email: email,
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
 });
 
 // router.get('/checkout', async (req, res) => {});
