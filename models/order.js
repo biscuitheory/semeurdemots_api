@@ -26,6 +26,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: DataTypes.UUID,
       status_id: DataTypes.INTEGER,
+      shipping_firstname: DataTypes.STRING,
+      shipping_lastname: DataTypes.STRING,
+      shipping_address: DataTypes.STRING,
+      shipping_zipcode: DataTypes.STRING,
+      shipping_city: DataTypes.STRING,
+      shipping_country: DataTypes.STRING,
     },
     {
       sequelize,

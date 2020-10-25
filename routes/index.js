@@ -3,13 +3,17 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 
 const router = express.Router();
-const productsRouter = require('./products');
 const usersRouter = require('./users');
+const productsRouter = require('./products');
+const ordersRouter = require('./orders');
+const statusesRouter = require('./statuses');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 router.use(usersRouter);
 router.use(productsRouter);
+router.use(ordersRouter);
+router.use(statusesRouter);
 
 router.get('/', (req, res) => {
   res.status(200).json({ message: 'Home' });

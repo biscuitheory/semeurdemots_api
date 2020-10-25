@@ -1,0 +1,12 @@
+{
+    "eslint.codeAction.showDocumentation": {
+    
+        "enable": true
+    },
+    "eslint.validate": [
+    
+    ],
+    "eslint.workingDirectories": [
+      { "mode" : "auto" }
+    ]
+}

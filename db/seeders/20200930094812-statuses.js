@@ -1,16 +1,13 @@
-const statuses = [...Array(5)].map((status) => {
-  const statusNames = [
-    'Pending',
-    'Processing',
-    'Cancelled',
-    'Completed',
-    'Refunded',
-  ];
-  const statusNamesOrdered = statusNames.map((statusName) => {
-    return statusName;
-  });
+const statusNames = [
+  'Pending',
+  'Processing',
+  'Cancelled',
+  'Completed',
+  'Refunded',
+];
+const statuses = statusNames.map((status) => {
   return {
-    name: statusNamesOrdered,
+    name: status,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
