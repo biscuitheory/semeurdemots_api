@@ -8,13 +8,6 @@ const authMid = require('../utils/jwt.utils');
 
 const router = express.Router();
 
-// const calculateOrderAmount = products => {
-//   // Replace this constant with a calculation of the order's amount
-//   // Calculate the order total on the server to prevent
-//   // people from directly manipulating the amount on the client
-//   return 1400;
-// };
-
 router.get('/products', async (req, res) => {
   const productsFound = await productsController.getProducts();
   res.status(201).json(productsFound);
@@ -109,7 +102,6 @@ router.post('/payment', async (req, res) => {
   console.log('paymnt', req.body);
   console.log('test amount ', typeof amount);
   const paymentIntent = await stripe.paymentIntents.create({
-    // amount: calculateOrderAmount(product),
     amount: amount * 100,
     currency: 'eur',
     description: name,
