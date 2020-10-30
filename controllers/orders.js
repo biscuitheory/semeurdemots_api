@@ -6,7 +6,6 @@ const { Order } = db;
 module.exports = {
   addOrder: async (data) => {
     const {
-      id,
       user_id,
       status_id,
       shipping_firstname,
@@ -15,6 +14,7 @@ module.exports = {
       shipping_zipcode,
       shipping_city,
       shipping_country,
+      payment
     } = data;
 
     return Order.create({
@@ -26,6 +26,7 @@ module.exports = {
       shipping_zipcode,
       shipping_city,
       shipping_country,
+      payment,
     });
   },
 };

@@ -180,7 +180,7 @@ router.post('/signinadmin', async (req, res) => {
 });
 
 router.get('/user/me', authenticateJWT, async (req, res) => {
-  console.log(req.user);
+  console.log('from user route', req.user);
   const identifiedUser = await usersController.getIdentifiedUser(
     req.user.userId
   );
@@ -254,18 +254,18 @@ router.get('/users/:id', async (req, res) => {
 
 router.patch('/users/', authenticateJWT, async (req, res) => {
   const { userId } = req.user;
-  const { username, email } = req.body;
+  const { email } = req.body;
 
-  if (username === null || username === undefined || username === '') {
-    return res.status(400).json({
-      error: "Le champ username n'est pas renseigné",
-    });
-  }
-  if (typeof username !== 'string') {
-    return res.status(400).json({
-      error: 'Le champ username doit être une chaîne de caractères',
-    });
-  }
+  // if (username === null || username === undefined || username === '') {
+  //   return res.status(400).json({
+  //     error: "Le champ username n'est pas renseigné",
+  //   });
+  // }
+  // if (typeof username !== 'string') {
+  //   return res.status(400).json({
+  //     error: 'Le champ username doit être une chaîne de caractères',
+  //   });
+  // }
 
   // console.log(req.body);
   const userUpdated = await usersController.updateUser(req.body, userId);

@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       shipping_zipcode: DataTypes.STRING,
       shipping_city: DataTypes.STRING,
       shipping_country: DataTypes.STRING,
+      payment: DataTypes.STRING,
     },
     {
       sequelize,
