@@ -14,4 +14,13 @@ module.exports = {
       attributes: ['name'],
     });
   },
+
+  getStatusByName: (statusName) => {
+    return Status.findOne({
+      where: {
+        name: statusName,
+      },
+      attributes: ['id'],
+    });
+  },
 };

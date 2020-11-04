@@ -32,7 +32,7 @@ module.exports = {
   },
 
   updateProduct: async (data) => {
-    console.log(data.id);
+    // console.log(data.id);
     const { id } = data;
     const productFound = await Product.findByPk(id);
     if (!productFound) {
@@ -50,7 +50,7 @@ module.exports = {
     const products = await Product.findAll();
     const filteredProducts = [];
 
-    console.log('touc', data);
+    // console.log('touc', data);
 
     products.forEach((product) => {
       for (let [key, value] of Object.entries(data.localStorage)) {

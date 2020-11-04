@@ -180,7 +180,7 @@ router.post('/signinadmin', async (req, res) => {
 });
 
 router.get('/user/me', authenticateJWT, async (req, res) => {
-  console.log('from user route', req.user);
+  // console.log('from user route', req.user);
   const identifiedUser = await usersController.getIdentifiedUser(
     req.user.userId
   );
@@ -254,7 +254,6 @@ router.get('/users/:id', async (req, res) => {
 
 router.patch('/users/', authenticateJWT, async (req, res) => {
   const { userId } = req.user;
-  const { email } = req.body;
 
   // if (username === null || username === undefined || username === '') {
   //   return res.status(400).json({
@@ -272,7 +271,7 @@ router.patch('/users/', authenticateJWT, async (req, res) => {
 
   if (!userUpdated) {
     return res.status(404).json({
-      message: "La ressource demandée n'existe pas",
+      message: "L'utilisateur demandé n'existe pas",
     });
   }
 

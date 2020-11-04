@@ -99,8 +99,8 @@ router.post('/cart', async (req, res) => {
 
 router.post('/payment', async (req, res) => {
   const { amount, name, email } = req.body;
-  console.log('paymnt', req.body);
-  console.log('test amount ', typeof amount);
+  // console.log('paymnt', req.body);
+  // console.log('test amount ', typeof amount);
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amount * 100,
     currency: 'eur',

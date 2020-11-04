@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const db = require('../models');
 
-const { Order } = db;
+const { Order, Status } = db;
 
 module.exports = {
   addOrder: async (data) => {
@@ -14,7 +14,7 @@ module.exports = {
       shipping_zipcode,
       shipping_city,
       shipping_country,
-      payment
+      payment,
     } = data;
 
     return Order.create({
@@ -28,5 +28,49 @@ module.exports = {
       shipping_country,
       payment,
     });
+  },
+
+  getOrderById: (order_id) => {
+    return Order.findByPk(order_id.id, {
+      include: [
+        {
+          model: Status,
+          attributes: ['name'],
+        },
+      ],
+    });
+  },
+
+  getAllOrders: () => {
+    return Order.findAll({
+      include: [
+        {
+          model: Status,
+          attributes: ['name'],
+        },
+      ],
+      attributes: [
+        'id',
+        'user_id',
+        'status_id',
+        'shipping_firstname',
+        'shipping_lastname',
+        'shipping_address',
+        'shipping_zipcode',
+        'shipping_city',
+        'shipping_country',
+        'payment',
+      ],
+    });
+  },
+
+  updateOrder: async (data, status_id, id) => {
+    // console.log('yoyo', id);
+    const orderFound = await Order.findByPk(id);
+    if (!orderFound) {
+      return orderFound;
+    }
+    console.log('yoyo', data);
+    return orderFound.update(data);
   },
 };
