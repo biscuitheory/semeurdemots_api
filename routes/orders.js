@@ -1,10 +1,19 @@
 const express = require('express');
 require('dotenv').config();
+const nodemailer = require('nodemailer');
 
 const statusesController = require('../controllers/statuses');
 const ordersController = require('../controllers/orders');
 
 const router = express.Router();
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
 
 router.get('/orders', async (req, res) => {
   const ordersFound = await ordersController.getAllOrders();
@@ -55,8 +64,8 @@ router.post('/orders', async (req, res) => {
 });
 
 router.patch('/orders', async (req, res) => {
-  const { id, status_id } = req.body;
-  console.log('wala ', id);
+  const { id, status_id, user_email, user_username } = req.body;
+  console.log('wala ', req.body);
 
   const orderUpdated = await ordersController.updateOrder(
     req.body,
@@ -66,6 +75,21 @@ router.patch('/orders', async (req, res) => {
   const orderStatus = await statusesController.getStatusById(
     req.body.status_id
   );
+
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: user_email,
+    subject: `Confirmation de votre commande sur semeurdemots.fr`,
+    html: `Chèr(e) ${user_username}, nous vous confirmons l'enregistrement de votre commande n°${id} passée en ce jour sur http://localhost:3000/compte-client et nous vous en remercions. Vous serez informé(e) par email de son expédition et pouvez également suivre son évolution à l'adresse http://localhost:3000/compte-client/suivi-commandes. A très bientôt sur www.semeurdemots.fr !`,
+  };
+
+  transporter.sendMail(mailOptions, function (err, info) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(`Email sent: '${info.response}`);
+    }
+  });
 
   // console.log('ic ', orderUpdated.id);
   if (!orderUpdated) {
