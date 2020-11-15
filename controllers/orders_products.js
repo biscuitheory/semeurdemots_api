@@ -1,11 +1,12 @@
 const db = require('../models');
 const products = require('./products');
 
-const { Order_Product, Product } = db;
+// const { Order_Product, Product } = db;
+const { OrderProduct, Product } = db;
 
 module.exports = {
   addFullOrder: (order_id, product_id, quantity) => {
-    return Order_Product.create({
+    return OrderProduct.create({
       product_id,
       order_id,
       quantity,
@@ -13,7 +14,7 @@ module.exports = {
   },
 
   getOrder: (order_id, product_id) => {
-    return Order_Product.findOne({
+    return OrderProduct.findOne({
       include: [
         {
           model: Product,

@@ -1,4 +1,5 @@
 'use strict';
+
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -9,12 +10,25 @@ module.exports = (sequelize, DataTypes) => {
           name: 'user_id',
         },
       });
-      this.belongsToMany(models.Product, {
-        through: 'Order_products',
-        foreignKey: {
-          name: 'product_id',
+      this.belongsToMany(
+        models.Product,
+        {
+          // through: models.Order_Product,
+          // through: models.OrderProduct,
+          through: 'OrderProduct',
+          foreignKey: 'order_id',
+          otherKey: 'product_id',
         },
-      });
+        // through: 'Order_Products',
+        // as: 'Product',
+        // foreignKey: {
+        //   name: 'product_id',
+        // }
+        {
+          foreignKey: 'ProductId',
+          as: 'product_id',
+        }
+      );
       this.belongsTo(models.Status, {
         foreignKey: {
           name: 'status_id',

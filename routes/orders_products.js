@@ -1,5 +1,6 @@
 const express = require('express');
 
+const ordersController = require('../controllers/orders');
 const ordersProductsController = require('../controllers/orders_products');
 const authMid = require('../utils/jwt.utils');
 
@@ -11,8 +12,7 @@ router.post(
   authMid.isAdmin,
   async (req, res) => {
     const { order_id, product_id, quantity } = req.body;
-    console.log('gneee ', req.body.products);
-
+    console.log('gneee ', req.body);
 
     const newFullOrder = await ordersProductsController.addFullOrder(
       order_id,
@@ -29,13 +29,35 @@ router.post(
   }
 );
 
+router.get('/customerorders', async (req, res) => {
+  const { user_id } = req.body;
+
+  // recuperer les orders avec user_id de la requête
+  const ordersFound = await ordersController.getOrdersByUserId(user_id);
+
+  console.log('toto', ordersFound);
+
+  if (!ordersFound) {
+    return res.status(404).json({
+      error: "Il n'y a pas de commandes passées par cet user_id",
+    });
+  }
+
+  return res.status(201).json(ordersFound);
+});
+
 router.get('/fullorder', async (req, res) => {
-  const { order_id, product_id } = req.body;
-  const ordersFound = await ordersProductsController.getOrder(
-    order_id,
-    product_id
-  );
+  const ordersFound = await ordersProductsController.getOrder(req.body);
   res.status(201).json(ordersFound);
 });
+
+// router.get('/fullorder', async (req, res) => {
+//   const { order_id, product_id } = req.body;
+//   const ordersFound = await ordersProductsController.getOrder(
+//     order_id,
+//     product_id
+//   );
+//   res.status(201).json(ordersFound);
+// });
 
 module.exports = router;

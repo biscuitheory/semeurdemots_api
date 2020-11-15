@@ -1,7 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 const db = require('../models');
 
-const { Order, Status } = db;
+// const { Order, Status, Order_Product, Product } = db;
+const { Order, Status, OrderProduct, Product } = db;
 
 module.exports = {
   addOrder: async (data) => {
@@ -38,6 +39,29 @@ module.exports = {
           attributes: ['name'],
         },
       ],
+    });
+  },
+
+  getOrdersByUserId: (user_id) => {
+    console.log('kiki ', user_id);
+    return Order.findAll({
+      // where: {
+      //   user_id: user_id,
+      // },
+      include: [
+        {
+          model: Product,
+          // as: 'Product',
+          // attributes: ['product_id'],
+          through: {
+            attributes: ['product_id'],
+            where: {
+              user_id: user_id,
+            },
+          },
+        },
+      ],
+      // include: [Product],
     });
   },
 
