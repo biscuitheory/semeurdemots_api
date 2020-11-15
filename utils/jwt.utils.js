@@ -38,7 +38,7 @@ module.exports = {
   },
 
   isAdmin: (req, res, next) => {
-    console.log(req.user);
+    console.log('isAdmin', req.user);
     if (req.user.userAdmin === true) next();
     else {
       res.status(401).json({

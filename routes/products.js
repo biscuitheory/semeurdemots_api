@@ -3,7 +3,6 @@ require('dotenv').config();
 const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`);
 
 const productsController = require('../controllers/products');
-const { authenticateJWT } = require('../utils/jwt.utils');
 const authMid = require('../utils/jwt.utils');
 
 const router = express.Router();
@@ -18,16 +17,89 @@ router.post(
   authMid.authenticateJWT,
   authMid.isAdmin,
   async (req, res) => {
-    const { userAdmin } = req.user;
+    const { name, price, stock, description, image } = req.body;
 
-    if (userAdmin === false) {
-      return res.status(403).json({
-        message: "Vous n'êtes pas autorisé à accéder à cette ressource",
+    if (name === null || name === undefined || name === '') {
+      return res.status(400).json({
+        error: "Le champ nom du produit n'est pas renseigné",
+      });
+    }
+    if (typeof name !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ nom du produit doit être une chaîne de caractères',
+      });
+    }
+
+    if (price === null || price === undefined || price === '') {
+      return res.status(400).json({
+        error: "Le champ prix du produit n'est pas renseigné",
+      });
+    }
+    if (typeof price !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ prix du produit doit être une chaîne de caractères',
+      });
+    }
+    if (!/^-?\d*\.?\d*$/.test(price)) {
+      return res.status(400).json({
+        error: 'Veuillez utiliser des chiffres pour saisir le prix.',
+      });
+    }
+
+    if (stock === null || stock === undefined || stock === '') {
+      return res.status(400).json({
+        error: "Le champ stock du produit n'est pas renseigné",
+      });
+    }
+    if (typeof stock !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ stock du produit doit être une chaîne de caractères',
+      });
+    }
+    if (!/^-?\d*\.?\d*$/.test(price)) {
+      return res.status(400).json({
+        error: 'Veuillez utiliser des chiffres pour saisir le stock.',
+      });
+    }
+
+    if (
+      description === null ||
+      description === undefined ||
+      description === ''
+    ) {
+      return res.status(400).json({
+        error: "Le champ description du produit n'est pas renseigné",
+      });
+    }
+    if (typeof description !== 'string') {
+      return res.status(400).json({
+        error:
+          'Le champ description du produit doit être une chaîne de caractères',
+      });
+    }
+
+    if (image === null || image === undefined || image === '') {
+      return res.status(400).json({
+        error: "Le champ image du produit n'est pas renseigné",
+      });
+    }
+    if (typeof image !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ image du produit doit être une chaîne de caractères',
+      });
+    }
+    if (
+      !/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi.test(
+        image
+      )
+    ) {
+      return res.status(400).json({
+        error:
+          "Veuillez entrer un lien URL de l'image du produit hébergé au format 'http://www.nomdusite.jpg' ou 'https://www.nomdusite.jpg'.",
       });
     }
 
     const newProduct = await productsController.addProduct(req.body);
-    // console.log(newProduct);
 
     return res.status(201).json({
       id: newProduct.id,
@@ -41,42 +113,139 @@ router.post(
   }
 );
 
-router.patch('/products/', authenticateJWT, async (req, res) => {
-  const { productId } = req.params;
-  const { name } = req.body;
+router.patch(
+  '/products/',
+  authMid.authenticateJWT,
+  authMid.isAdmin,
+  async (req, res) => {
+    // const { productId } = req.params;
+    const { name, price, stock, description, image } = req.body;
 
-  if (name === null || name === undefined || name === '') {
-    return res.status(400).json({
-      error: "Le champ nom du produit n'est pas renseigné",
+    if (name === null || name === undefined || name === '') {
+      return res.status(400).json({
+        error: "Le champ nom du produit n'est pas renseigné",
+      });
+    }
+    if (typeof name !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ nom du produit doit être une chaîne de caractères',
+      });
+    }
+
+    if (price === null || price === undefined || price === '') {
+      return res.status(400).json({
+        error: "Le champ prix du produit n'est pas renseigné",
+      });
+    }
+    if (typeof price !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ prix du produit doit être une chaîne de caractères',
+      });
+    }
+    if (!/^-?\d*\.?\d*$/.test(price)) {
+      return res.status(400).json({
+        error: 'Veuillez utiliser des chiffres pour saisir le prix.',
+      });
+    }
+
+    if (stock === null || stock === undefined || stock === '') {
+      return res.status(400).json({
+        error: "Le champ stock du produit n'est pas renseigné",
+      });
+    }
+    if (typeof stock !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ stock du produit doit être une chaîne de caractères',
+      });
+    }
+    if (!/^-?\d*\.?\d*$/.test(price)) {
+      return res.status(400).json({
+        error: 'Veuillez utiliser des chiffres pour saisir le stock.',
+      });
+    }
+
+    if (
+      description === null ||
+      description === undefined ||
+      description === ''
+    ) {
+      return res.status(400).json({
+        error: "Le champ description du produit n'est pas renseigné",
+      });
+    }
+    if (typeof description !== 'string') {
+      return res.status(400).json({
+        error:
+          'Le champ description du produit doit être une chaîne de caractères',
+      });
+    }
+
+    if (image === null || image === undefined || image === '') {
+      return res.status(400).json({
+        error: "Le champ image du produit n'est pas renseigné",
+      });
+    }
+    if (typeof image !== 'string') {
+      return res.status(400).json({
+        error: 'Le champ image du produit doit être une chaîne de caractères',
+      });
+    }
+    if (
+      !/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi.test(
+        image
+      )
+    ) {
+      return res.status(400).json({
+        error:
+          "Veuillez entrer un lien URL de l'image du produit hébergé au format 'http://www.nomdusite.jpg' ou 'https://www.nomdusite.jpg'.",
+      });
+    }
+
+    // console.log(req.body);
+    const productUpdated = await productsController.updateProduct(
+      req.body
+      // productId
+    );
+
+    if (!productUpdated) {
+      return res.status(404).json({
+        message: "La ressource demandée n'existe pas",
+      });
+    }
+
+    return res.status(200).json({
+      name: productUpdated.name,
+      type: productUpdated.type,
+      price: productUpdated.price,
+      stock: productUpdated.stock,
+      description: productUpdated.description,
+      image: productUpdated.image,
     });
   }
-  if (typeof name !== 'string') {
-    return res.status(400).json({
-      error: 'Le champ nom du produit doit être une chaîne de caractères',
+);
+
+router.delete(
+  '/products/',
+  authMid.authenticateJWT,
+  authMid.isAdmin,
+  async (req, res) => {
+    const { id } = req.body;
+    console.log('pouit ', req.body);
+
+    const productFound = await productsController.getProductById(id);
+
+    if (!productFound) {
+      return res.status(404).json({
+        message: "La ressource demandée n'existe pas",
+      });
+    }
+
+    await productsController.deleteProduct(id);
+    return res.status(200).json({
+      message: 'La ressource a bien été supprimée',
     });
   }
-
-  // console.log(req.body);
-  const productUpdated = await productsController.updateProduct(
-    req.body,
-    productId
-  );
-
-  if (!productUpdated) {
-    return res.status(404).json({
-      message: "La ressource demandée n'existe pas",
-    });
-  }
-
-  return res.status(200).json({
-    name: productUpdated.name,
-    type: productUpdated.type,
-    price: productUpdated.price,
-    stock: productUpdated.stock,
-    description: productUpdated.description,
-    image: productUpdated.image,
-  });
-});
+);
 
 router.post('/cart', async (req, res) => {
   // console.log('ert', req.body.id);

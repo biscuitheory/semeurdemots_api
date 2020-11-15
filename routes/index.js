@@ -7,6 +7,7 @@ const usersRouter = require('./users');
 const productsRouter = require('./products');
 const ordersRouter = require('./orders');
 const statusesRouter = require('./statuses');
+const ordersProductsRouter = require('./orders_products');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -14,6 +15,7 @@ router.use(usersRouter);
 router.use(productsRouter);
 router.use(ordersRouter);
 router.use(statusesRouter);
+router.use(ordersProductsRouter);
 
 router.get('/', (req, res) => {
   res.status(200).json({ message: 'Home' });

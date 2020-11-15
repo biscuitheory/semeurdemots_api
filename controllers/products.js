@@ -3,7 +3,7 @@ const db = require('../models');
 const { Product } = db;
 
 module.exports = {
-  addProduct: async (data) => {
+  addProduct: (data) => {
     const { id, name, type, price, stock, description, image } = data;
 
     return Product.create({
@@ -31,6 +31,11 @@ module.exports = {
     });
   },
 
+  getProductById: (id) => {
+    console.log('rere ', id);
+    return Product.findByPk(id);
+  },
+
   updateProduct: async (data) => {
     // console.log(data.id);
     const { id } = data;
@@ -39,6 +44,14 @@ module.exports = {
       return productFound;
     }
     return productFound.update(data);
+  },
+
+  deleteProduct: (id) => {
+    return Product.destroy({
+      where: {
+        id: id,
+      },
+    });
   },
 
   // getProductById: (productId) => {
@@ -53,11 +66,11 @@ module.exports = {
     // console.log('touc', data);
 
     products.forEach((product) => {
-      for (let [key, value] of Object.entries(data.localStorage)) {
+      for (const [key, value] of Object.entries(data.localStorage)) {
         // console.log('papi', key, value)
         if (key == product.id) {
-          product.dataValues.quantity = value
-          filteredProducts.push(product)
+          product.dataValues.quantity = value;
+          filteredProducts.push(product);
           // console.log('prod', product)
         }
       }

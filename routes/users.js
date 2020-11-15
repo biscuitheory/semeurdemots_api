@@ -254,19 +254,19 @@ router.get('/users/:id', async (req, res) => {
 
 router.patch('/users/', authenticateJWT, async (req, res) => {
   const { userId } = req.user;
+  const { username } = req.body;
 
-  // if (username === null || username === undefined || username === '') {
-  //   return res.status(400).json({
-  //     error: "Le champ username n'est pas renseigné",
-  //   });
-  // }
-  // if (typeof username !== 'string') {
-  //   return res.status(400).json({
-  //     error: 'Le champ username doit être une chaîne de caractères',
-  //   });
-  // }
+  if (username === null || username === undefined || username === '') {
+    return res.status(400).json({
+      error: "Le champ username n'est pas renseigné",
+    });
+  }
+  if (typeof username !== 'string') {
+    return res.status(400).json({
+      error: 'Le champ username doit être une chaîne de caractères',
+    });
+  }
 
-  // console.log(req.body);
   const userUpdated = await usersController.updateUser(req.body, userId);
 
   if (!userUpdated) {
@@ -301,10 +301,6 @@ router.delete('/users/:id', async (req, res) => {
   return res.status(200).json({
     message: "L'utilisateur a été supprimé",
   });
-});
-
-router.get('/signup', async (req, res) => {
-  res.send('Signup formulaire');
 });
 
 module.exports = router;
