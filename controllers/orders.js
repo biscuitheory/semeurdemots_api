@@ -42,22 +42,23 @@ module.exports = {
     });
   },
 
-  getOrdersByUserId: (user_id) => {
-    console.log('kiki ', user_id);
+  getOrdersByUserId: (userId) => {
+    console.log('kiki ', userId);
     return Order.findAll({
-      // where: {
-      //   user_id: user_id,
-      // },
+      where: {
+        // user_id: user_id,
+        user_id: userId,
+      },
       include: [
         {
           model: Product,
           // as: 'Product',
           // attributes: ['product_id'],
           through: {
-            attributes: ['product_id'],
-            where: {
-              user_id: user_id,
-            },
+            attributes: ['product_id', 'quantity'],
+            // where: {
+            //   user_id: userId,
+            // },
           },
         },
       ],

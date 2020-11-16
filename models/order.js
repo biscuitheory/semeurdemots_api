@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: 'user_id',
         },
+        // foreignKey: 'user_id',
       });
       this.belongsToMany(
         models.Product,
@@ -18,16 +19,16 @@ module.exports = (sequelize, DataTypes) => {
           through: 'OrderProduct',
           foreignKey: 'order_id',
           otherKey: 'product_id',
-        },
+        }
         // through: 'Order_Products',
         // as: 'Product',
         // foreignKey: {
         //   name: 'product_id',
         // }
-        {
-          foreignKey: 'ProductId',
-          as: 'product_id',
-        }
+        // {
+        //   foreignKey: 'ProductId',
+        //   as: 'product_id',
+        // }
       );
       this.belongsTo(models.Status, {
         foreignKey: {

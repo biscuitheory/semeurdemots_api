@@ -6,34 +6,32 @@ const authMid = require('../utils/jwt.utils');
 
 const router = express.Router();
 
-router.post(
-  '/fullorder',
-  authMid.authenticateJWT,
-  authMid.isAdmin,
-  async (req, res) => {
-    const { order_id, product_id, quantity } = req.body;
-    console.log('gneee ', req.body);
+router.post('/fullorder', authMid.authenticateJWT, async (req, res) => {
+  const { order_id, product_id, quantity } = req.body;
+  console.log('gneee ', req.body);
 
-    const newFullOrder = await ordersProductsController.addFullOrder(
-      order_id,
-      product_id,
-      quantity
-    );
+  const newFullOrder = await ordersProductsController.addFullOrder(
+    order_id,
+    product_id,
+    quantity
+  );
 
-    return res.status(201).json({
-      id: newFullOrder.id,
-      product_id: newFullOrder.product_id,
-      order_id: newFullOrder.order_id,
-      quantity: newFullOrder.quantity,
-    });
-  }
-);
+  return res.status(201).json({
+    id: newFullOrder.id,
+    product_id: newFullOrder.product_id,
+    order_id: newFullOrder.order_id,
+    quantity: newFullOrder.quantity,
+  });
+});
 
-router.get('/customerorders', async (req, res) => {
-  const { user_id } = req.body;
+router.post('/customerorders', async (req, res) => {
+  // const { user_id } = req.body;
+  const { userId } = req.body;
+  console.log('rufu', req.body);
 
   // recuperer les orders avec user_id de la requête
-  const ordersFound = await ordersController.getOrdersByUserId(user_id);
+  // const ordersFound = await ordersController.getOrdersByUserId(user_id);
+  const ordersFound = await ordersController.getOrdersByUserId(userId);
 
   console.log('toto', ordersFound);
 
@@ -46,7 +44,7 @@ router.get('/customerorders', async (req, res) => {
   return res.status(201).json(ordersFound);
 });
 
-router.get('/fullorder', async (req, res) => {
+router.get('/allorders', async (req, res) => {
   const ordersFound = await ordersProductsController.getOrder(req.body);
   res.status(201).json(ordersFound);
 });
