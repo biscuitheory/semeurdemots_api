@@ -47,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       shipping_zipcode: DataTypes.STRING,
       shipping_city: DataTypes.STRING,
       shipping_country: DataTypes.STRING,
+      total_price: DataTypes.INTEGER,
       payment: DataTypes.STRING,
     },
     {

@@ -37,6 +37,7 @@ router.get('/orders/:id', async (req, res) => {
     shipping_zipcode: orderFound.shipping_zipcode,
     shipping_city: orderFound.shipping_city,
     shipping_country: orderFound.shipping_country,
+    total_price: orderFound.total_price,
     payment: orderFound.payment,
   });
 });
@@ -59,6 +60,7 @@ router.post('/orders', async (req, res) => {
     shipping_zipcode: newOrder.shipping_zipcode,
     shipping_city: newOrder.shipping_city,
     shipping_country: newOrder.shipping_country,
+    total_price: newOrder.total_price,
     payment: newOrder.payment,
   });
 });
@@ -108,6 +110,7 @@ router.patch('/orders', async (req, res) => {
     shipping_zipcode: orderUpdated.shipping_zipcode,
     shipping_city: orderUpdated.shipping_city,
     shipping_country: orderUpdated.shipping_country,
+    total_price: orderUpdated.total_price,
     payment: orderUpdated.payment,
   });
 });

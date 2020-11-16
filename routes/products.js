@@ -37,7 +37,7 @@ router.post(
     }
     if (typeof price !== 'string') {
       return res.status(400).json({
-        error: 'Le champ prix du produit doit être une chaîne de caractères',
+        error: 'Le champ prix du produit doit être un chiffre',
       });
     }
     if (!/^-?\d*\.?\d*$/.test(price)) {

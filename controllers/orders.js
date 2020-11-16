@@ -15,6 +15,7 @@ module.exports = {
       shipping_zipcode,
       shipping_city,
       shipping_country,
+      total_price,
       payment,
     } = data;
 
@@ -27,6 +28,7 @@ module.exports = {
       shipping_zipcode,
       shipping_city,
       shipping_country,
+      total_price,
       payment,
     });
   },
@@ -84,6 +86,7 @@ module.exports = {
         'shipping_zipcode',
         'shipping_city',
         'shipping_country',
+        'total_price',
         'payment',
       ],
     });

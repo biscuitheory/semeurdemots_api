@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Orders', {
@@ -31,6 +32,9 @@ module.exports = {
       },
       shipping_country: {
         type: Sequelize.STRING,
+      },
+      total_price: {
+        type: Sequelize.INTEGER,
       },
       payment: {
         type: Sequelize.STRING,
