@@ -5,7 +5,7 @@ const products = require('./products');
 const { OrderProduct, Product } = db;
 
 module.exports = {
-  addFullOrder: (order_id, product_id, quantity) => {
+  addOrderProduct: (order_id, product_id, quantity) => {
     return OrderProduct.create({
       product_id,
       order_id,
@@ -13,8 +13,8 @@ module.exports = {
     });
   },
 
-  getOrder: (order_id, product_id) => {
-    return OrderProduct.findOne({
+  getOrdersProducts: (order_id, product_id) => {
+    return OrderProduct.findAll({
       include: [
         {
           model: Product,

@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('../models');
 
 // const { Order, Status, Order_Product, Product } = db;
-const { Order, Status, OrderProduct, Product } = db;
+const { Order, Status, Product } = db;
 
 module.exports = {
   addOrder: async (data) => {
@@ -45,26 +45,19 @@ module.exports = {
   },
 
   getOrdersByUserId: (userId) => {
-    console.log('kiki ', userId);
+    // console.log('kiki ', userId);
     return Order.findAll({
       where: {
-        // user_id: user_id,
         user_id: userId,
       },
       include: [
         {
           model: Product,
-          // as: 'Product',
-          // attributes: ['product_id'],
           through: {
             attributes: ['product_id', 'quantity'],
-            // where: {
-            //   user_id: userId,
-            // },
           },
         },
       ],
-      // include: [Product],
     });
   },
 

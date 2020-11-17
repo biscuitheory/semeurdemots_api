@@ -10,7 +10,7 @@ router.post('/fullorder', authMid.authenticateJWT, async (req, res) => {
   const { order_id, product_id, quantity } = req.body;
   console.log('gneee ', req.body);
 
-  const newFullOrder = await ordersProductsController.addFullOrder(
+  const newFullOrder = await ordersProductsController.addOrderProduct(
     order_id,
     product_id,
     quantity
@@ -45,17 +45,10 @@ router.post('/customerorders', async (req, res) => {
 });
 
 router.get('/allorders', async (req, res) => {
-  const ordersFound = await ordersProductsController.getOrder(req.body);
+  const ordersFound = await ordersProductsController.getOrdersProducts(
+    req.body
+  );
   res.status(201).json(ordersFound);
 });
-
-// router.get('/fullorder', async (req, res) => {
-//   const { order_id, product_id } = req.body;
-//   const ordersFound = await ordersProductsController.getOrder(
-//     order_id,
-//     product_id
-//   );
-//   res.status(201).json(ordersFound);
-// });
 
 module.exports = router;
