@@ -38,7 +38,7 @@ router.post('/signup', async (req, res) => {
       from: process.env.EMAIL,
       to: email,
       subject: `Bienvenue ${username}, la création de votre compte client est un succès !`,
-      html: `Chèr(e) ${username}, votre compte client sur la boutique du semeur de mots a bien été crée ! Vous pouvez désormais vous connecter via la page http://localhost:3000/compte-client pour consulter l'historique de vos (futures) commandes ainsi que vos informations personnelles saisies sur le site. A très bientôt sur www.semeurdemots.fr !`,
+      html: `Chèr(e) ${username}, votre compte client sur la boutique du semeur de mots a bien été crée ! Vous pouvez désormais vous connecter via la page https://www.semeurdemots.fr/compte-client pour consulter l'historique de vos (futures) commandes ainsi que vos informations personnelles saisies sur le site. A très bientôt sur https://www.semeurdemots.fr/ !`,
     };
 
     transporter.sendMail(mailOptions, function (err, info) {

@@ -13,7 +13,6 @@ chai.use(chaiHttp);
 describe('/GET users', () => {
   it('it should GET all the users', (done) => {
     chai
-      // .request(server)
       .request('http://localhost:8088/api')
       .get('/users')
       .end((err, res) => {

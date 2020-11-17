@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "start:dev": "nodemon app.js",
-    "test": "mocha controllers/*.spec.js",
-    "test:watch": "mocha -—watch controllers/*.spec.js"
+    "test": "mocha _tests_/*.spec.js",
+    "test:watch": "mocha -—watch _tests_/*.spec.js"
   },
   "repository": {
     "type": "git",
