@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "start:dev": "nodemon app.js"
+    "start:dev": "nodemon app.js",
+    "test": "mocha controllers/*.spec.js",
+    "test:watch": "mocha -—watch controllers/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,8 @@
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-node": "^4.1.0",
@@ -47,6 +51,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.2",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
     "prettier": "^2.1.2",
     "sequelize-cli": "^6.2.0"
   }
