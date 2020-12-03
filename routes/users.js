@@ -93,6 +93,7 @@ router.post('/signincustomer', async (req, res) => {
       res.status(200).json({
         token: jwtUtils.genToken(userFound),
         user: {
+          id: userFound.id,
           firstname: userFound.firstname,
           lastname: userFound.lastname,
           address: userFound.address,

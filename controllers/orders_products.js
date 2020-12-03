@@ -13,17 +13,22 @@ module.exports = {
     });
   },
 
-  getOrdersProducts: (order_id, product_id) => {
+  getOrdersProducts: () => {
     return OrderProduct.findAll({
       include: [
         {
           model: Product,
+          through: {
+            attributes: ['product_id', 'quantity'],
+          },
         },
       ],
-      where: {
-        order_id,
-        product_id,
-      },
     });
   },
+
+  // getAllCustomersOrders: (req.body) => {
+  //   return OrderProduct.findAll({
+
+  //   })
+  // }
 };

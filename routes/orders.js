@@ -44,7 +44,7 @@ router.get('/orders/:id', async (req, res) => {
 
 router.post('/orders', async (req, res) => {
   // const { } = req.body.id;
-  console.log('retou', req.body);
+  console.log('req.body post orders ', req.body);
   const newOrder = await ordersController.addOrder(req.body);
   const orderStatus = await statusesController.getStatusById(
     req.body.status_id
@@ -67,7 +67,7 @@ router.post('/orders', async (req, res) => {
 
 router.patch('/orders', async (req, res) => {
   const { id, status_id, user_email, user_username } = req.body;
-  console.log('wala ', req.body);
+  console.log('req.body passed on patch orders ', req.body);
 
   const orderUpdated = await ordersController.updateOrder(
     req.body,

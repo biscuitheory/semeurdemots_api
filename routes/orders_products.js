@@ -1,4 +1,5 @@
 const express = require('express');
+const orders = require('../controllers/orders');
 
 const ordersController = require('../controllers/orders');
 const ordersProductsController = require('../controllers/orders_products');
@@ -8,7 +9,7 @@ const router = express.Router();
 
 router.post('/fullorder', authMid.authenticateJWT, async (req, res) => {
   const { order_id, product_id, quantity } = req.body;
-  console.log('gneee ', req.body);
+  console.log('post fullorder passed values ', req.body);
 
   const newFullOrder = await ordersProductsController.addOrderProduct(
     order_id,
@@ -26,14 +27,14 @@ router.post('/fullorder', authMid.authenticateJWT, async (req, res) => {
 
 router.post('/customerorders', async (req, res) => {
   // const { user_id } = req.body;
-  const { userId } = req.body;
-  console.log('rufu', req.body);
+  const { user_id } = req.body;
+  console.log('post user_id customerorders ', req.body);
 
   // recuperer les orders avec user_id de la requête
   // const ordersFound = await ordersController.getOrdersByUserId(user_id);
-  const ordersFound = await ordersController.getOrdersByUserId(userId);
+  const ordersFound = await ordersController.getOrdersByUserId(user_id);
 
-  console.log('toto', ordersFound);
+  // console.log('ordersFound ', ordersFound);
 
   if (!ordersFound) {
     return res.status(404).json({
@@ -45,10 +46,17 @@ router.post('/customerorders', async (req, res) => {
 });
 
 router.get('/allorders', async (req, res) => {
-  const ordersFound = await ordersProductsController.getOrdersProducts(
+  const ordersFound = await ordersController.getOrdersProducts(
     req.body
   );
   res.status(201).json(ordersFound);
 });
+
+// router.get('/allcustomersorders', async (req, res) => {
+//   const allOrdersFound = await ordersProductsController.getAllCustomersOrders(
+//     req.body
+//   );
+//   res.status(201).json(allOrdersFound);
+// });
 
 module.exports = router;

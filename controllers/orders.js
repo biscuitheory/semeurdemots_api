@@ -44,11 +44,11 @@ module.exports = {
     });
   },
 
-  getOrdersByUserId: (userId) => {
+  getOrdersByUserId: (user_id) => {
     // console.log('kiki ', userId);
     return Order.findAll({
       where: {
-        user_id: userId,
+        user_id: user_id,
       },
       include: [
         {
@@ -81,6 +81,19 @@ module.exports = {
         'shipping_country',
         'total_price',
         'payment',
+      ],
+    });
+  },
+
+  getOrdersProducts: () => {
+    return Order.findAll({
+      include: [
+        {
+          model: Product,
+          through: {
+            attributes: ['product_id', 'quantity'],
+          },
+        },
       ],
     });
   },
