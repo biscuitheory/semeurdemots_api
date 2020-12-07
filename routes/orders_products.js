@@ -2,6 +2,7 @@ const express = require('express');
 const orders = require('../controllers/orders');
 
 const ordersController = require('../controllers/orders');
+const statusesController = require('../controllers/statuses');
 const ordersProductsController = require('../controllers/orders_products');
 const authMid = require('../utils/jwt.utils');
 
@@ -46,17 +47,8 @@ router.post('/customerorders', async (req, res) => {
 });
 
 router.get('/allorders', async (req, res) => {
-  const ordersFound = await ordersController.getOrdersProducts(
-    req.body
-  );
+  const ordersFound = await ordersController.getOrdersProducts(req.body);
   res.status(201).json(ordersFound);
 });
-
-// router.get('/allcustomersorders', async (req, res) => {
-//   const allOrdersFound = await ordersProductsController.getAllCustomersOrders(
-//     req.body
-//   );
-//   res.status(201).json(allOrdersFound);
-// });
 
 module.exports = router;

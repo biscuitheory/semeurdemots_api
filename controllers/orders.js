@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('../models');
 
 // const { Order, Status, Order_Product, Product } = db;
-const { Order, Status, Product } = db;
+const { Order, Status, Product, User } = db;
 
 module.exports = {
   addOrder: async (data) => {
@@ -93,6 +93,14 @@ module.exports = {
           through: {
             attributes: ['product_id', 'quantity'],
           },
+        },
+        {
+          model: Status,
+          attributes: ['name'],
+        },
+        {
+          model: User,
+          attributes: ['firstname', 'lastname'],
         },
       ],
     });
