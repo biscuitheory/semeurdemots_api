@@ -1,7 +1,5 @@
 const db = require('../models');
-const products = require('./products');
 
-// const { Order_Product, Product } = db;
 const { OrderProduct, Product } = db;
 
 module.exports = {

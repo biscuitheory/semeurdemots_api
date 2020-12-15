@@ -118,7 +118,6 @@ router.patch(
   authMid.authenticateJWT,
   authMid.isAdmin,
   async (req, res) => {
-    // const { productId } = req.params;
     const { name, price, stock, description, image } = req.body;
 
     if (name === null || name === undefined || name === '') {
@@ -201,11 +200,7 @@ router.patch(
       });
     }
 
-    // console.log(req.body);
-    const productUpdated = await productsController.updateProduct(
-      req.body
-      // productId
-    );
+    const productUpdated = await productsController.updateProduct(req.body);
 
     if (!productUpdated) {
       return res.status(404).json({
@@ -230,7 +225,6 @@ router.delete(
   authMid.isAdmin,
   async (req, res) => {
     const { id } = req.body;
-    console.log('pouit ', req.body);
 
     const productFound = await productsController.getProductById(id);
 
@@ -281,16 +275,5 @@ router.post('/payment', async (req, res) => {
     clientSecret: paymentIntent.client_secret,
   });
 });
-
-// router.get('/checkout', async (req, res) => {});
-
-// router.post('/cart', async (req, res) => {
-//   const addProductToCart = await productsController.addToCart(req.body, userId);
-//   return res.status(201).json(addProductToCart);
-// });
-
-// router.post('/checkout', async (req, res) => {
-//   //post > ajoute un order dans la route order (post order ?)
-// });
 
 module.exports = router;

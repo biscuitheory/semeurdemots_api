@@ -93,7 +93,6 @@ router.patch('/orders', async (req, res) => {
     }
   });
 
-  // console.log('ic ', orderUpdated.id);
   if (!orderUpdated) {
     return res.status(404).json({
       message: "La commande demandée n'existe pas",

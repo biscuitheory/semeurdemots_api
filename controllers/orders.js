@@ -100,7 +100,16 @@ module.exports = {
         },
         {
           model: User,
-          attributes: ['firstname', 'lastname'],
+          attributes: [
+            'firstname',
+            'lastname',
+            'address',
+            'zipcode',
+            'city',
+            'country',
+            'phone',
+            'email',
+          ],
         },
       ],
     });
