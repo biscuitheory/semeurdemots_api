@@ -1,23 +1,24 @@
 const { v4: uuidv4 } = require('uuid');
-const faker = require('faker');
+require('dotenv').config();
 
-const users = [...Array(5)].map((user) => ({
-  id: uuidv4(),
-  firstname: faker.name.firstName(),
-  lastname: faker.name.lastName(),
-  address: faker.address.streetAddress(),
-  zipcode: faker.address.zipCode(),
-  city: faker.address.city(),
-  country: faker.address.country(),
-  phone: faker.phone.phoneNumber(),
-  email: faker.internet.email(),
-  username: faker.internet.userName(),
-  password: faker.internet.password(8),
-  admin: false,
-  payment: faker.finance.transactionDescription(),
-  createdAt: new Date(),
-  updatedAt: new Date(),
-}));
+const users = [
+  {
+    id: uuidv4(),
+    firstname: 'Mask',
+    lastname: 'Tuxedo',
+    address: 'Tuxedo Mask Street House',
+    zipcode: '1001-100',
+    city: 'Tokyo',
+    country: 'Japon',
+    phone: '0909090909',
+    email: process.env.ADMIN_EMAIL,
+    username: 'Tuxedo',
+    password: process.env.ADMIN_PWD,
+    admin: process.env.ADMIN_USER,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
