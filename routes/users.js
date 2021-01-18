@@ -52,7 +52,6 @@ router.post('/signup', async (req, res) => {
     res.status(201).json({
       username: newUser.username,
       email: newUser.email,
-      admin: newUser.admin,
     });
   } else {
     return res.status(409).json({
@@ -103,7 +102,6 @@ router.post('/signincustomer', async (req, res) => {
           phone: userFound.phone,
           username: userFound.username,
           email: userFound.email,
-          admin: userFound.admin,
         },
       });
     } else {
@@ -165,7 +163,6 @@ router.post('/signinadmin', async (req, res) => {
           phone: userFound.phone,
           username: userFound.username,
           email: userFound.email,
-          admin: userFound.admin,
         },
       });
     } else {
@@ -217,7 +214,6 @@ router.post('/signupfull', async (req, res) => {
       phone: newUser.phone,
       username: newUser.username,
       email: newUser.email,
-      admin: newUser.admin,
     });
   } else {
     return res.status(409).json({
