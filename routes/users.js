@@ -163,6 +163,7 @@ router.post('/signinadmin', async (req, res) => {
           phone: userFound.phone,
           username: userFound.username,
           email: userFound.email,
+          admin: userFound.admin,
         },
       });
     } else {
