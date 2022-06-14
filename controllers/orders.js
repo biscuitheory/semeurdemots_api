@@ -115,7 +115,7 @@ module.exports = {
     });
   },
 
-  updateOrder: async (data, status_id, id) => {
+  updateOrder: async (data, id) => {
     // console.log('yoyo', id);
     const orderFound = await Order.findByPk(id);
     if (!orderFound) {
